@@ -66,6 +66,7 @@
   .hero__logos { gap: var(--space-4); }
 
   /* Profil */
+  .profil__grid { grid-template-columns: 1fr; gap: var(--space-8); }
   .kompetensi__grid { grid-template-columns: 1fr 1fr; }
   .profil__callout { padding: var(--space-5); }
 
