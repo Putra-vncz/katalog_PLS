@@ -1,0 +1,217 @@
+/* ============================================
+   E-KATALOG PLS UNPATTI — Responsive Styles
+   ============================================ */
+
+/* === TABLET (768px - 1024px) === */
+@media (max-width: 1024px) {
+  .sambutan__grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+  }
+  .sambutan__decor { display: none; }
+
+  .profil__grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+  }
+
+  .karier__grid {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-5);
+  }
+
+  .panduan {
+    background: var(--color-primary);
+  }
+
+  /* Admin sidebar */
+  .admin-sidebar { width: 72px; }
+  .admin-sidebar__label { display: none; }
+  .admin-main { margin-left: 72px; }
+}
+
+/* === MOBILE (< 768px) === */
+@media (max-width: 767px) {
+  :root {
+    --section-py: 3.5rem;
+  }
+
+  /* Nav */
+  .navbar__hamburger { display: flex; }
+  .navbar__links {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 280px;
+    height: 100vh;
+    background: var(--color-primary);
+    flex-direction: column;
+    align-items: stretch;
+    padding: 80px var(--space-6) var(--space-6);
+    transform: translateX(100%);
+    transition: transform var(--duration-slow) var(--ease-out);
+    box-shadow: var(--shadow-2xl);
+    gap: var(--space-1);
+  }
+  .navbar__links.open { transform: translateX(0); }
+  .navbar__link {
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-md);
+    font-size: var(--text-base);
+  }
+
+  /* Hero */
+  .hero { min-height: 100svh; }
+  .hero__logo { width: 56px; height: 56px; }
+  .hero__logos { gap: var(--space-4); }
+
+  /* Profil */
+  .kompetensi__grid { grid-template-columns: 1fr 1fr; }
+  .profil__callout { padding: var(--space-5); }
+
+  /* Karier */
+  .karier__grid { grid-template-columns: 1fr; }
+  .karier__card { padding: var(--space-6); }
+
+  .skills-row__list {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  /* Career Tree Mobile */
+  .ct-branches {
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-top: 40px;
+    gap: 40px 0;
+    position: relative;
+  }
+  .ct-branches::before {
+    content: '';
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    width: 2px;
+    height: calc(50% + 40px);
+    background: rgba(255,255,255,0.2);
+    transform: translateX(-50%);
+    display: block;
+    z-index: 0;
+  }
+  .ct-branch {
+    max-width: 50%;
+    width: 50%;
+    padding: 0 6px;
+    flex: none;
+  }
+  .ct-branch::before {
+    top: -20px;
+    height: 20px;
+    background: rgba(255,255,255,0.2);
+  }
+  .ct-branch:hover::before {
+    height: 20px; /* Disable shrink effect on mobile to prevent line gaps */
+  }
+  .ct-branch::after {
+    display: block;
+    top: -20px;
+  }
+  .ct-branch:nth-child(odd)::after {
+    left: 50% !important;
+    right: 0 !important;
+  }
+  .ct-branch:nth-child(even)::after {
+    left: 0 !important;
+    right: 50% !important;
+  }
+  .ct-leaf {
+    padding: var(--space-4) var(--space-2);
+  }
+  .ct-leaf-icon {
+    font-size: 2rem;
+    margin-bottom: var(--space-2);
+  }
+  .ct-leaf-title {
+    font-size: var(--text-base);
+  }
+
+  /* Panduan Karier */
+  .panduan__step {
+    padding: var(--space-6) var(--space-5);
+  }
+  .panduan__step-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .panduan__step-title-wrap {
+    align-items: center;
+  }
+  .panduan__step-desc {
+    margin-left: 0;
+    text-align: center;
+  }
+  .panduan__checklist {
+    margin-left: 0;
+  }
+
+  /* Alumni */
+  .alumni__grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-5);
+  }
+
+
+
+  /* Kontak */
+  .kontak__info {
+    grid-template-columns: 1fr;
+  }
+
+  /* Admin */
+  .admin-sidebar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: auto;
+    width: 100%;
+    height: 64px;
+    flex-direction: row;
+    overflow-x: auto;
+    z-index: var(--z-sticky);
+  }
+  .admin-sidebar__nav {
+    flex-direction: row;
+  }
+  .admin-sidebar__label { display: none; }
+  .admin-main {
+    margin-left: 0;
+    margin-bottom: 64px;
+  }
+
+  .slide-over { width: 100%; max-width: 100%; }
+
+  .modal { width: 95%; padding: var(--space-6); }
+
+  .toast-container {
+    left: var(--space-4);
+    right: var(--space-4);
+    top: auto;
+    bottom: 80px;
+  }
+  .toast { min-width: auto; width: 100%; }
+}
+
+/* === SMALL MOBILE (< 480px) === */
+@media (max-width: 479px) {
+  .kompetensi__grid { grid-template-columns: 1fr; }
+  .hero__badge { font-size: var(--text-xs); }
+  .kontak__qr canvas, .kontak__qr img { width: 140px; height: 140px; }
+}
+
+/* === LARGE DESKTOP (> 1400px) === */
+@media (min-width: 1400px) {
+  .container { max-width: 1320px; }
+  .alumni__grid { grid-template-columns: repeat(3, 1fr); }
+}

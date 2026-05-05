@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — Admin E-Katalog PLS UNPATTI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/admin.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+<div class="admin-layout">
+  <!-- SIDEBAR -->
+  <aside class="admin-sidebar" id="sidebar">
+    <div class="admin-sidebar__header">
+      <div class="admin-sidebar__logo">🎓</div>
+      <div class="admin-sidebar__brand">E-Katalog PLS<small>Admin Panel</small></div>
+    </div>
+    <nav class="admin-sidebar__nav">
+      <a href="javascript:void(0)" class="admin-sidebar__item active" data-panel="dashboard" onclick="showPanel('dashboard')">
+        <span class="admin-sidebar__item-icon">🏠</span><span class="admin-sidebar__label">Dashboard</span></a>
+      <a href="javascript:void(0)" class="admin-sidebar__item" data-panel="pengantar" onclick="showPanel('pengantar')">
+        <span class="admin-sidebar__item-icon">📝</span><span class="admin-sidebar__label">Kata Pengantar</span></a>
+      <a href="javascript:void(0)" class="admin-sidebar__item" data-panel="karier" onclick="showPanel('karier')">
+        <span class="admin-sidebar__item-icon">🗺</span><span class="admin-sidebar__label">Manajemen Karier</span></a>
+      <a href="javascript:void(0)" class="admin-sidebar__item" data-panel="alumni" onclick="showPanel('alumni')">
+        <span class="admin-sidebar__item-icon">👤</span><span class="admin-sidebar__label">Profil Alumni</span></a>
+      <a href="javascript:void(0)" class="admin-sidebar__item" data-panel="panduan" onclick="showPanel('panduan')">
+        <span class="admin-sidebar__item-icon">📋</span><span class="admin-sidebar__label">Panduan Karier</span></a>
+      <a href="javascript:void(0)" class="admin-sidebar__item" data-panel="kontak" onclick="showPanel('kontak')">
+        <span class="admin-sidebar__item-icon">📞</span><span class="admin-sidebar__label">Kontak & QR</span></a>
+      <a href="javascript:void(0)" class="admin-sidebar__item" data-panel="branding" onclick="showPanel('branding')">
+        <span class="admin-sidebar__item-icon">🖼</span><span class="admin-sidebar__label">Branding / Hero</span></a>
+      <a href="javascript:void(0)" class="admin-sidebar__item" data-panel="settings" onclick="showPanel('settings')">
+        <span class="admin-sidebar__item-icon">⚙️</span><span class="admin-sidebar__label">Pengaturan</span></a>
+    </nav>
+    <div class="admin-sidebar__footer">
+      <button class="admin-sidebar__logout" onclick="logout()">
+        <span>🚪</span><span class="admin-sidebar__label">Keluar</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="admin-main">
+    <!-- TOAST CONTAINER -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- ===== PANEL: DASHBOARD ===== -->
+    <div class="admin-panel active" id="panel-dashboard">
+      <div class="admin-main__header">
+        <h1 class="admin-main__title">Dashboard Overview</h1>
+        <div class="admin-main__actions">
+          <a href="index.html" target="_blank" class="btn btn--outline btn--sm">👁 Preview Katalog</a>
+        </div>
+      </div>
+      <div class="stats-grid" id="stats-grid"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-6);">
+        <div class="admin-card">
+          <div class="admin-card__header">
+            <h3 class="admin-card__title">Aktivitas Terbaru</h3>
+          </div>
+          <div class="activity-log" id="activity-log"><p style="color:var(--color-text-light);font-size:var(--text-sm);">Belum ada aktivitas.</p></div>
+        </div>
+        <div class="admin-card">
+          <div class="admin-card__header"><h3 class="admin-card__title">Aksi Cepat</h3></div>
+          <div style="display:flex;flex-direction:column;gap:var(--space-3);">
+            <button class="btn btn--primary btn--sm" onclick="showPanel('alumni')" style="justify-content:flex-start;">+ Tambah Alumni</button>
+            <button class="btn btn--green btn--sm" onclick="showPanel('karier')" style="justify-content:flex-start;">+ Tambah Jabatan</button>
+            <a href="index.html" target="_blank" class="btn btn--outline btn--sm" style="justify-content:flex-start;">👁 Preview Katalog</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== PANEL: KATA PENGANTAR ===== -->
+    <div class="admin-panel" id="panel-pengantar">
+      <div class="admin-main__header"><h1 class="admin-main__title">Kata Pengantar</h1>
+        <button class="btn btn--primary btn--sm" onclick="savePengantar()">💾 Simpan</button></div>
+      <div class="editor-layout">
+        <div>
+          <div class="form-group"><label class="form-label">Pesan / Kutipan Kaprodi</label>
+            <textarea class="form-input form-textarea" id="pengantar-quote" rows="6" style="min-height:160px;"></textarea></div>
+          <div class="form-group"><label class="form-label">Nama Kaprodi</label>
+            <input class="form-input" id="pengantar-name" type="text"></div>
+          <div class="form-group"><label class="form-label">Jabatan</label>
+            <input class="form-input" id="pengantar-title" type="text"></div>
+          <div class="form-group">
+            <label class="form-label">Foto Kaprodi</label>
+            <div style="display:flex;align-items:center;gap:var(--space-4);margin-bottom:var(--space-3);">
+              <div id="pengantar-photo-preview" style="width:72px;height:72px;border-radius:50%;overflow:hidden;background:var(--color-bg-primary);display:flex;align-items:center;justify-content:center;flex-shrink:0;border:2px solid var(--color-border);">
+                <span style="font-size:2rem;">👤</span>
+              </div>
+              <div style="flex:1;">
+                <label class="btn btn--outline btn--sm" style="cursor:pointer;display:inline-flex;">
+                  📷 Pilih Foto
+                  <input type="file" accept="image/*" onchange="handlePengantarPhoto(event)" style="display:none;">
+                </label>
+                <p style="font-size:var(--text-xs);color:var(--color-text-muted);margin-top:var(--space-2);">Format: JPG, PNG. Disarankan persegi (1:1).</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="editor-preview">
+          <div class="editor-preview__label">Preview</div>
+          <div id="pengantar-preview" style="font-style:italic;font-family:var(--font-heading);font-size:var(--text-lg);line-height:1.6;border-left:4px solid var(--color-accent);padding-left:var(--space-4);color:var(--color-text-dark);"></div>
+          <div style="display:flex;align-items:center;gap:var(--space-3);margin-top:var(--space-4);">
+            <div id="pengantar-preview-photo" style="width:48px;height:48px;border-radius:50%;overflow:hidden;background:var(--color-bg-primary);display:flex;align-items:center;justify-content:center;flex-shrink:0;border:2px solid var(--color-border);">
+              <span style="font-size:1.5rem;">👤</span>
+            </div>
+            <div>
+              <p id="pengantar-preview-name" style="font-weight:700;color:var(--color-primary);margin:0;"></p>
+              <p id="pengantar-preview-title" style="font-size:var(--text-sm);color:var(--color-text-muted);margin:0;"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== PANEL: KARIER ===== -->
+    <div class="admin-panel" id="panel-karier">
+      <div class="admin-main__header"><h1 class="admin-main__title">Manajemen Karier</h1>
+        <button class="btn btn--primary btn--sm" onclick="openAddJob()">+ Tambah Jabatan</button></div>
+      <div class="tabs" id="karier-tabs"></div>
+      <div class="admin-card"><div class="table-wrap"><table class="table" id="karier-table">
+        <thead><tr><th>Nama Jabatan</th><th>Deskripsi Singkat</th><th>Instansi</th><th style="width:120px;">Aksi</th></tr></thead>
+        <tbody id="karier-tbody"></tbody>
+      </table></div></div>
+    </div>
+
+    <!-- ===== PANEL: ALUMNI ===== -->
+    <div class="admin-panel" id="panel-alumni">
+      <div class="admin-main__header"><h1 class="admin-main__title">Profil Alumni</h1>
+        <button class="btn btn--primary btn--sm" onclick="openAddAlumni()">+ Tambah Alumni</button></div>
+      <div class="admin-alumni-grid" id="alumni-admin-grid"></div>
+    </div>
+
+    <!-- ===== PANEL: PANDUAN ===== -->
+    <div class="admin-panel" id="panel-panduan">
+      <div class="admin-main__header"><h1 class="admin-main__title">Panduan Karier</h1>
+        <button class="btn btn--primary btn--sm" onclick="savePanduan()">💾 Simpan</button></div>
+      <div id="panduan-editors"></div>
+    </div>
+
+    <!-- ===== PANEL: KONTAK ===== -->
+    <div class="admin-panel" id="panel-kontak">
+      <div class="admin-main__header"><h1 class="admin-main__title">Kontak & QR Code</h1>
+        <button class="btn btn--primary btn--sm" onclick="saveKontak()">💾 Simpan</button></div>
+      <div class="admin-card">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-5);">
+          <div class="form-group"><label class="form-label">Alamat</label><textarea class="form-input form-textarea" id="kontak-address" rows="3"></textarea></div>
+          <div class="form-group"><label class="form-label">Email</label><input class="form-input" id="kontak-email" type="email"></div>
+          <div class="form-group"><label class="form-label">Instagram</label><input class="form-input" id="kontak-ig" type="text"></div>
+          <div class="form-group"><label class="form-label">Website</label><input class="form-input" id="kontak-web" type="url"></div>
+        </div>
+      </div>
+      <div class="admin-card">
+        <div class="admin-card__header"><h3 class="admin-card__title">QR Code</h3></div>
+        <div class="form-group"><label class="form-label">URL untuk QR Code</label><input class="form-input" id="kontak-qr-url" type="url" oninput="generateAdminQR()"></div>
+        <div id="admin-qr-preview" style="margin-top:var(--space-4);text-align:center;"></div>
+      </div>
+    </div>
+
+    <!-- ===== PANEL: BRANDING ===== -->
+    <div class="admin-panel" id="panel-branding">
+      <div class="admin-main__header"><h1 class="admin-main__title">Branding / Hero</h1>
+        <button class="btn btn--primary btn--sm" onclick="saveBranding()">💾 Simpan</button></div>
+      <div class="admin-card">
+        <div class="form-group"><label class="form-label">Judul Utama Hero</label><input class="form-input" id="hero-edit-title" type="text"></div>
+        <div class="form-group"><label class="form-label">Sub-judul Hero</label><input class="form-input" id="hero-edit-subtitle" type="text"></div>
+        <div class="form-group"><label class="form-label">Badge Text</label><input class="form-input" id="hero-edit-badge" type="text"></div>
+      </div>
+    </div>
+
+    <!-- ===== PANEL: PENGATURAN ===== -->
+    <div class="admin-panel" id="panel-settings">
+      <div class="admin-main__header"><h1 class="admin-main__title">Pengaturan</h1></div>
+      <div class="admin-card">
+        <div class="admin-card__header"><h3 class="admin-card__title">Ganti Password Admin</h3></div>
+        <div class="form-group"><label class="form-label">Password Baru</label><input class="form-input" id="new-password" type="password"></div>
+        <div class="form-group"><label class="form-label">Konfirmasi Password</label><input class="form-input" id="confirm-password" type="password"></div>
+        <button class="btn btn--primary btn--sm" onclick="changePassword()">Ubah Password</button>
+      </div>
+      <div class="admin-card">
+        <div class="admin-card__header"><h3 class="admin-card__title">Mode Pemeliharaan</h3></div>
+        <div style="display:flex;align-items:center;gap:var(--space-4);">
+          <label class="toggle"><input type="checkbox" id="maintenance-toggle" onchange="toggleMaintenance()"><span class="toggle__slider"></span></label>
+          <span style="font-size:var(--text-sm);color:var(--color-text-muted);">Aktifkan mode pemeliharaan (halaman publik akan menampilkan "Sedang Dalam Pemeliharaan")</span>
+        </div>
+      </div>
+      <div class="admin-card">
+        <div class="admin-card__header"><h3 class="admin-card__title">Backup & Restore Data</h3></div>
+        <div style="display:flex;gap:var(--space-3);flex-wrap:wrap;">
+          <button class="btn btn--outline btn--sm" onclick="exportData()">📥 Export JSON</button>
+          <label class="btn btn--outline btn--sm" style="cursor:pointer;">📤 Import JSON<input type="file" accept=".json" onchange="importData(event)" style="display:none;"></label>
+          <button class="btn btn--sm" style="background:var(--color-error);color:#fff;" onclick="resetData()">🗑 Reset ke Default</button>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- MODALS -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal()">
+  <div class="modal" id="modal-content" onclick="event.stopPropagation()">
+    <div class="modal__header"><h3 class="modal__title" id="modal-title">Modal</h3>
+      <button class="modal__close" onclick="closeModal()">✕</button></div>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<!-- Slide Over -->
+<div class="slide-over-overlay" id="slideover-overlay" onclick="closeSlideOver()"></div>
+<div class="slide-over" id="slideover">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-6);">
+    <h3 id="slideover-title" style="font-weight:700;font-size:var(--text-xl);">Panel</h3>
+    <button onclick="closeSlideOver()" style="font-size:1.5rem;color:var(--color-text-muted);cursor:pointer;">✕</button>
+  </div>
+  <div id="slideover-body"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+<script src="js/data.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/admin-dashboard.js"></script>
+</body>
+</html>

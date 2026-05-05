@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login — E-Katalog PLS UNPATTI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/components.css">
+  <style>
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 50%, var(--color-primary-light) 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    .batik-bg {
+      position: fixed;
+      inset: 0;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+    .login-card {
+      position: relative;
+      z-index: 2;
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: var(--radius-2xl);
+      padding: var(--space-12) var(--space-10);
+      width: 420px;
+      max-width: 92vw;
+      text-align: center;
+      animation: scaleIn 0.6s var(--ease-out);
+      box-shadow: 0 24px 80px rgba(0,0,0,0.3);
+    }
+    .login-logo {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto var(--space-6);
+      background: rgba(255,255,255,0.12);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      border: 2px solid rgba(255,255,255,0.2);
+    }
+    .login-title {
+      font-family: var(--font-heading);
+      font-size: var(--text-3xl);
+      color: #fff;
+      margin-bottom: var(--space-2);
+    }
+    .login-subtitle {
+      color: rgba(255,255,255,0.6);
+      font-size: var(--text-sm);
+      margin-bottom: var(--space-8);
+    }
+    .login-field {
+      margin-bottom: var(--space-5);
+      text-align: left;
+    }
+    .login-field label {
+      display: block;
+      color: rgba(255,255,255,0.7);
+      font-size: var(--text-sm);
+      font-weight: var(--weight-semibold);
+      margin-bottom: var(--space-2);
+    }
+    .login-field input {
+      width: 100%;
+      padding: var(--space-3) var(--space-4);
+      background: rgba(255,255,255,0.08);
+      border: 2px solid rgba(255,255,255,0.15);
+      border-radius: var(--radius-md);
+      color: #fff;
+      font-size: var(--text-base);
+      transition: all var(--duration-fast) var(--ease-out);
+    }
+    .login-field input:focus {
+      border-color: var(--color-accent);
+      background: rgba(255,255,255,0.12);
+      box-shadow: 0 0 0 3px rgba(var(--color-accent-rgb), 0.2);
+    }
+    .login-field input::placeholder {
+      color: rgba(255,255,255,0.3);
+    }
+    .login-btn {
+      width: 100%;
+      padding: var(--space-4);
+      background: var(--color-accent);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-md);
+      font-size: var(--text-base);
+      font-weight: var(--weight-bold);
+      cursor: pointer;
+      transition: all var(--duration-base) var(--ease-out);
+      margin-top: var(--space-4);
+    }
+    .login-btn:hover {
+      background: var(--color-accent-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(var(--color-accent-rgb), 0.4);
+    }
+    .login-error {
+      color: var(--color-accent);
+      font-size: var(--text-sm);
+      margin-top: var(--space-4);
+      display: none;
+    }
+
+    .login-back {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      margin-top: var(--space-6);
+      color: rgba(255,255,255,0.4);
+      font-size: var(--text-sm);
+      text-decoration: none;
+      transition: color var(--duration-fast);
+    }
+    .login-back:hover { color: rgba(255,255,255,0.7); }
+
+    /* Floating orbs */
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      pointer-events: none;
+      filter: blur(60px);
+    }
+    .orb-1 { width: 300px; height: 300px; background: rgba(232,72,85,0.15); top: -50px; right: -50px; animation: floatSlow 10s ease-in-out infinite; }
+    .orb-2 { width: 250px; height: 250px; background: rgba(67,170,139,0.1); bottom: -30px; left: -30px; animation: floatSlow 12s ease-in-out infinite 3s; }
+    .orb-3 { width: 200px; height: 200px; background: rgba(249,199,79,0.08); top: 40%; left: 20%; animation: floatSlow 15s ease-in-out infinite 5s; }
+  </style>
+</head>
+<body>
+  <div class="batik-bg"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <div class="login-card">
+    <div class="login-logo">🎓</div>
+    <h1 class="login-title">Admin E-Katalog</h1>
+    <p class="login-subtitle">Program Studi PLS — FKIP UNPATTI</p>
+
+    <form id="login-form" onsubmit="return handleLogin(event)">
+      <div class="login-field">
+        <label for="username">Username</label>
+        <input type="text" id="username" placeholder="Masukkan username" autocomplete="username" required>
+      </div>
+      <div class="login-field">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Masukkan password" autocomplete="current-password" required>
+      </div>
+      <button type="submit" class="login-btn">Masuk</button>
+      <p class="login-error" id="login-error">Username atau password salah.</p>
+
+    </form>
+    <a href="index.html" class="login-back">← Kembali ke E-Katalog</a>
+  </div>
+
+  <script src="js/data.js"></script>
+  <script src="js/storage.js"></script>
+  <script>
+    // Redirect if already logged in
+    if (sessionStorage.getItem('ekatalog_admin_logged_in') === 'true') {
+      window.location.href = 'dashboard.html';
+    }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      const user = document.getElementById('username').value.trim();
+      const pass = document.getElementById('password').value;
+      const settings = Storage.get('settings');
+      const validUser = settings.adminUser || 'admin';
+      const validPass = settings.adminPassword || 'admin123';
+
+      if (user === validUser && pass === validPass) {
+        sessionStorage.setItem('ekatalog_admin_logged_in', 'true');
+        Storage.addLog('Admin login berhasil');
+        window.location.href = 'dashboard.html';
+      } else {
+        const err = document.getElementById('login-error');
+        err.style.display = 'block';
+        err.style.animation = 'fadeIn 0.3s ease';
+        document.getElementById('password').value = '';
+        document.getElementById('password').focus();
+      }
+      return false;
+    }
+  </script>
+</body>
+</html>
