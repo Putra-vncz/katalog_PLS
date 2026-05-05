@@ -313,6 +313,20 @@
   color: var(--color-text-dark);
 }
 
+/* === MODAL FORM RESPONSIVENESS === */
+.modal-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+}
+
+@media (max-width: 767px) {
+  .modal-form-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}
+
 /* === SLIDE OVER PANEL === */
 .slide-over-overlay {
   position: fixed;
@@ -533,6 +547,7 @@
   cursor: pointer;
   transition: all var(--duration-fast) var(--ease-out);
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .tab:hover {

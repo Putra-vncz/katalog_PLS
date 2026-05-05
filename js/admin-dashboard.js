@@ -26,14 +26,44 @@ document.addEventListener('DOMContentLoaded', () => {
 function showPanel(name) {
   document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.admin-sidebar__item').forEach(i => i.classList.remove('active'));
+  document.querySelectorAll('.admin-bottomnav__item').forEach(i => i.classList.remove('active'));
+  document.querySelectorAll('.admin-moresheet__item').forEach(i => i.classList.remove('active'));
+
   const panel = document.getElementById('panel-' + name);
-  const item = document.querySelector(`[data-panel="${name}"]`);
+  const sidebarItems = document.querySelectorAll(`.admin-sidebar__item[data-panel="${name}"]`);
+  const bottomnavItems = document.querySelectorAll(`.admin-bottomnav__item[data-panel="${name}"]`);
+  const moresheetItems = document.querySelectorAll(`.admin-moresheet__item[data-panel="${name}"]`);
+
   if (panel) panel.classList.add('active');
-  if (item) item.classList.add('active');
+  sidebarItems.forEach(i => i.classList.add('active'));
+  bottomnavItems.forEach(i => i.classList.add('active'));
+  moresheetItems.forEach(i => i.classList.add('active'));
+
+  // Update Topbar Title
+  const titles = {
+    'dashboard': 'Dashboard',
+    'pengantar': 'Kata Pengantar',
+    'karier': 'Manajemen Karier',
+    'alumni': 'Profil Alumni',
+    'panduan': 'Panduan Karier',
+    'kontak': 'Kontak & QR',
+    'branding': 'Branding / Hero',
+    'settings': 'Pengaturan'
+  };
+  const titleEl = document.getElementById('topbar-title');
+  if (titleEl) titleEl.textContent = titles[name] || 'Admin Panel';
+
   // Refresh data when switching
   if (name === 'dashboard') loadDashboard();
   if (name === 'karier') loadKarier();
   if (name === 'alumni') loadAlumni();
+}
+
+function toggleMoreSheet() {
+  const overlay = document.getElementById('moresheet-overlay');
+  const sheet = document.getElementById('admin-moresheet');
+  if (overlay) overlay.classList.toggle('active');
+  if (sheet) sheet.classList.toggle('active');
 }
 
 // === TOAST ===
@@ -268,7 +298,7 @@ function showAlumniForm(idx) {
       <input type="file" accept="image/*" onchange="handleAlumniPhoto(event)" style="margin-top:var(--space-2);font-size:var(--text-sm);">
     </div>
     <div class="form-group"><label class="form-label">Nama Lengkap</label><input class="form-input" id="alum-name" value="${a.name}"></div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4);">
+    <div class="modal-form-row">
       <div class="form-group"><label class="form-label">Tahun Lulus</label><input class="form-input" id="alum-year" value="${a.year}"></div>
       <div class="form-group"><label class="form-label">LinkedIn URL</label><input class="form-input" id="alum-linkedin" value="${a.linkedin || ''}"></div>
     </div>

@@ -3,7 +3,7 @@
    ============================================ */
 
 /* === TABLET (768px - 1024px) === */
-@media (max-width: 1024px) {
+@media (min-width: 768px) and (max-width: 1024px) {
   .sambutan__grid {
     grid-template-columns: 1fr;
     gap: var(--space-8);
@@ -168,31 +168,11 @@
     grid-template-columns: 1fr;
   }
 
-  /* Admin */
-  .admin-sidebar {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    top: auto;
-    width: 100%;
-    height: 64px;
-    flex-direction: row;
-    overflow-x: auto;
-    z-index: var(--z-sticky);
-  }
-  .admin-sidebar__nav {
-    flex-direction: row;
-  }
-  .admin-sidebar__label { display: none; }
-  .admin-main {
-    margin-left: 0;
-    margin-bottom: 64px;
-  }
+  /* Admin — handled in admin.css, only overrides here */
+  .slide-over { width: 100%; max-width: 100%; top: 56px; height: calc(100vh - 56px); }
 
-  .slide-over { width: 100%; max-width: 100%; }
-
-  .modal { width: 95%; padding: var(--space-6); }
+  .modal { width: 95%; padding: var(--space-5); max-height: 80vh; }
+  .modal .form-group { margin-bottom: var(--space-3); }
 
   .toast-container {
     left: var(--space-4);

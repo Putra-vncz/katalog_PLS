@@ -16,13 +16,27 @@
 </head>
 <body>
 <div class="admin-layout">
-  <!-- SIDEBAR -->
+  <!-- MOBILE TOP HEADER -->
+  <header class="admin-topbar" id="admin-topbar">
+    <div class="admin-topbar__left">
+      <span class="admin-topbar__icon">🎓</span>
+      <span class="admin-topbar__title" id="topbar-title">Dashboard</span>
+    </div>
+    <div class="admin-topbar__right">
+      <a href="index.html" target="_blank" class="admin-topbar__action" title="Preview">
+        👁
+      </a>
+    </div>
+  </header>
+
+  <!-- SIDEBAR (Desktop) -->
   <aside class="admin-sidebar" id="sidebar">
     <div class="admin-sidebar__header">
       <div class="admin-sidebar__logo">🎓</div>
       <div class="admin-sidebar__brand">E-Katalog PLS<small>Admin Panel</small></div>
     </div>
     <nav class="admin-sidebar__nav">
+      <!-- Primary Nav Items (visible in mobile bottom bar) -->
       <a href="javascript:void(0)" class="admin-sidebar__item active" data-panel="dashboard" onclick="showPanel('dashboard')">
         <span class="admin-sidebar__item-icon">🏠</span><span class="admin-sidebar__label">Dashboard</span></a>
       <a href="javascript:void(0)" class="admin-sidebar__item" data-panel="pengantar" onclick="showPanel('pengantar')">
@@ -47,6 +61,63 @@
     </div>
   </aside>
 
+  <!-- MOBILE BOTTOM NAV -->
+  <nav class="admin-bottomnav" id="admin-bottomnav">
+    <a href="javascript:void(0)" class="admin-bottomnav__item active" data-panel="dashboard" onclick="showPanel('dashboard')">
+      <span class="admin-bottomnav__icon">🏠</span>
+      <span class="admin-bottomnav__label">Home</span>
+    </a>
+    <a href="javascript:void(0)" class="admin-bottomnav__item" data-panel="karier" onclick="showPanel('karier')">
+      <span class="admin-bottomnav__icon">🗺</span>
+      <span class="admin-bottomnav__label">Karier</span>
+    </a>
+    <a href="javascript:void(0)" class="admin-bottomnav__item" data-panel="alumni" onclick="showPanel('alumni')">
+      <span class="admin-bottomnav__icon">👤</span>
+      <span class="admin-bottomnav__label">Alumni</span>
+    </a>
+    <a href="javascript:void(0)" class="admin-bottomnav__item" data-panel="panduan" onclick="showPanel('panduan')">
+      <span class="admin-bottomnav__icon">📋</span>
+      <span class="admin-bottomnav__label">Panduan</span>
+    </a>
+    <a href="javascript:void(0)" class="admin-bottomnav__item" onclick="toggleMoreSheet()">
+      <span class="admin-bottomnav__icon">☰</span>
+      <span class="admin-bottomnav__label">Lainnya</span>
+    </a>
+  </nav>
+
+  <!-- MOBILE "MORE" BOTTOM SHEET -->
+  <div class="admin-moresheet-overlay" id="moresheet-overlay" onclick="toggleMoreSheet()"></div>
+  <div class="admin-moresheet" id="admin-moresheet">
+    <div class="admin-moresheet__handle"></div>
+    <h3 class="admin-moresheet__title">Menu Lainnya</h3>
+    <div class="admin-moresheet__grid">
+      <a href="javascript:void(0)" class="admin-moresheet__item" data-panel="pengantar" onclick="showPanel('pengantar'); toggleMoreSheet();">
+        <span class="admin-moresheet__icon">📝</span>
+        <span>Kata Pengantar</span>
+      </a>
+      <a href="javascript:void(0)" class="admin-moresheet__item" data-panel="kontak" onclick="showPanel('kontak'); toggleMoreSheet();">
+        <span class="admin-moresheet__icon">📞</span>
+        <span>Kontak & QR</span>
+      </a>
+      <a href="javascript:void(0)" class="admin-moresheet__item" data-panel="branding" onclick="showPanel('branding'); toggleMoreSheet();">
+        <span class="admin-moresheet__icon">🖼</span>
+        <span>Branding / Hero</span>
+      </a>
+      <a href="javascript:void(0)" class="admin-moresheet__item" data-panel="settings" onclick="showPanel('settings'); toggleMoreSheet();">
+        <span class="admin-moresheet__icon">⚙️</span>
+        <span>Pengaturan</span>
+      </a>
+      <a href="index.html" target="_blank" class="admin-moresheet__item">
+        <span class="admin-moresheet__icon">👁</span>
+        <span>Preview Katalog</span>
+      </a>
+      <a href="javascript:void(0)" class="admin-moresheet__item admin-moresheet__item--danger" onclick="logout()">
+        <span class="admin-moresheet__icon">🚪</span>
+        <span>Keluar</span>
+      </a>
+    </div>
+  </div>
+
   <!-- MAIN CONTENT -->
   <main class="admin-main">
     <!-- TOAST CONTAINER -->
@@ -61,7 +132,7 @@
         </div>
       </div>
       <div class="stats-grid" id="stats-grid"></div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-6);">
+      <div class="dashboard__bottom-grid">
         <div class="admin-card">
           <div class="admin-card__header">
             <h3 class="admin-card__title">Aktivitas Terbaru</h3>
