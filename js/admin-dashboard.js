@@ -12,6 +12,14 @@ let editingJobIdx = -1;
 
 // === INIT ===
 document.addEventListener('DOMContentLoaded', () => {
+  loadAllPanels();
+});
+
+window.addEventListener('ekatalog_data_updated', () => {
+  loadAllPanels();
+});
+
+function loadAllPanels() {
   loadDashboard();
   loadPengantar();
   loadKarier();
@@ -20,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
   loadKontak();
   loadBranding();
   loadSettings();
-});
+}
 
 // === PANEL NAVIGATION ===
 function showPanel(name) {

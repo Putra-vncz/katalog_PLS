@@ -1,30 +1,51 @@
 // ============================================
-// E-KATALOG PLS UNPATTI — Storage Layer
+// E-KATALOG PLS UNPATTI — Storage Layer (Firebase)
 // ============================================
 
-const STORAGE_KEY = 'ekatalog_pls_unpatti';
+const firebaseConfig = {
+  apiKey: "AIzaSyAvJ3TC6QtbrPr0C0ETKHXtcn5vGdtkii4",
+  authDomain: "database-for-katalog-pls.firebaseapp.com",
+  databaseURL: "https://database-for-katalog-pls-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "database-for-katalog-pls",
+  storageBucket: "database-for-katalog-pls.firebasestorage.app",
+  messagingSenderId: "382032183723",
+  appId: "1:382032183723:web:462a5ea5847dee2e4792ee",
+  measurementId: "G-RRFE8SLTSM"
+};
+
+// Initialize Firebase
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
+const db = firebase.database();
+
+// Local cache to keep synchronous get() working
+window.__ekatalog_data = null;
 
 const Storage = {
   /** Get all data or a specific key */
   get(key) {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      const data = raw ? JSON.parse(raw) : null;
-      if (!data) return key ? (DEFAULT_DATA[key] ?? null) : DEFAULT_DATA;
-      return key ? (data[key] ?? DEFAULT_DATA[key] ?? null) : data;
-    } catch {
+    if (!window.__ekatalog_data) {
       return key ? (DEFAULT_DATA[key] ?? null) : DEFAULT_DATA;
     }
+    const data = window.__ekatalog_data;
+    if (!key) return data;
+    return data[key] ?? DEFAULT_DATA[key] ?? null;
   },
 
   /** Set a specific key */
   set(key, value) {
     try {
-      const data = this.get();
-      data[key] = value;
-      data.settings = data.settings || {};
-      data.settings.lastUpdated = new Date().toISOString();
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      // Optimistic update
+      if (!window.__ekatalog_data) {
+        window.__ekatalog_data = JSON.parse(JSON.stringify(DEFAULT_DATA));
+      }
+      window.__ekatalog_data[key] = value;
+      window.__ekatalog_data.settings = window.__ekatalog_data.settings || {};
+      window.__ekatalog_data.settings.lastUpdated = new Date().toISOString();
+      
+      // Sync to Firebase
+      db.ref('ekatalog_data').set(window.__ekatalog_data);
       return true;
     } catch (e) {
       console.error('Storage.set error:', e);
@@ -32,22 +53,20 @@ const Storage = {
     }
   },
 
-  /** Initialize with defaults if empty, or patch old dummy data */
+  /** Initialize Firebase Listener */
   init() {
-    const current = localStorage.getItem(STORAGE_KEY);
-    if (!current) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_DATA));
-    } else {
-      // Force patch if user still has the old dummy Kaprodi name cached
-      try {
-        const data = JSON.parse(current);
-        if (data.kataPengantar && data.kataPengantar.authorName === 'Dr. [Nama Kaprodi]') {
-          data.kataPengantar.authorName = 'Dr. Lamberthus J. Lokollo, M.Pd';
-          data.kataPengantar.authorImage = 'assets/images/kaprodi.jpg';
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-        }
-      } catch (e) {}
-    }
+    db.ref('ekatalog_data').on('value', (snapshot) => {
+      const data = snapshot.val();
+      if (!data) {
+        // First time initialization
+        db.ref('ekatalog_data').set(DEFAULT_DATA);
+        window.__ekatalog_data = JSON.parse(JSON.stringify(DEFAULT_DATA));
+      } else {
+        window.__ekatalog_data = data;
+      }
+      // Notify the app that new data arrived
+      window.dispatchEvent(new CustomEvent('ekatalog_data_updated'));
+    });
   },
 
   /** Export all data as JSON string */
@@ -59,7 +78,7 @@ const Storage = {
   import(jsonStr) {
     try {
       const data = JSON.parse(jsonStr);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      db.ref('ekatalog_data').set(data);
       return { success: true };
     } catch (e) {
       return { success: false, error: e.message };
@@ -68,7 +87,7 @@ const Storage = {
 
   /** Reset to defaults */
   reset() {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_DATA));
+    db.ref('ekatalog_data').set(DEFAULT_DATA);
   },
 
   /** Add activity log entry */
@@ -81,7 +100,10 @@ const Storage = {
     });
     // Keep last 50 entries
     data.activityLog = data.activityLog.slice(0, 50);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    
+    // Update locally and in Firebase
+    window.__ekatalog_data = data;
+    db.ref('ekatalog_data/activityLog').set(data.activityLog);
   },
 
   /** Download data as JSON file */

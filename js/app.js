@@ -10,6 +10,10 @@ document.addEventListener('DOMContentLoaded', () => {
   renderDynamicContent();
 });
 
+window.addEventListener('ekatalog_data_updated', () => {
+  renderDynamicContent();
+});
+
 // === NAVBAR ===
 function initNavbar() {
   const nav = document.querySelector('.navbar');
