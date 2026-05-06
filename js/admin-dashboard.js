@@ -504,20 +504,40 @@ function saveKontak() {
 }
 
 // === BRANDING ===
+let _heroBgData = null;
+
 function loadBranding() {
   const h = Storage.get('hero') || {};
   document.getElementById('hero-edit-title').value = h.title || '';
   document.getElementById('hero-edit-subtitle').value = h.subtitle || '';
   document.getElementById('hero-edit-badge').value = h.badge || '';
+  
+  if (h.backgroundImage) {
+    _heroBgData = h.backgroundImage;
+    document.getElementById('hero-bg-preview').innerHTML = `<img src="${h.backgroundImage}" style="width:100%;height:100%;object-fit:cover;">`;
+  }
+}
+
+function handleHeroBg(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    _heroBgData = ev.target.result;
+    document.getElementById('hero-bg-preview').innerHTML = `<img src="${ev.target.result}" style="width:100%;height:100%;object-fit:cover;">`;
+  };
+  reader.readAsDataURL(file);
 }
 
 function saveBranding() {
+  const h = Storage.get('hero') || {};
   Storage.set('hero', {
     title: document.getElementById('hero-edit-title').value,
     subtitle: document.getElementById('hero-edit-subtitle').value,
     badge: document.getElementById('hero-edit-badge').value,
+    backgroundImage: _heroBgData || h.backgroundImage || ''
   });
-  Storage.addLog('Branding Hero diperbarui');
+  Storage.addLog('Branding Hero diperbarui (termasuk background)');
   showToast('Branding berhasil disimpan!');
 }
 

@@ -246,6 +246,21 @@
         <div class="form-group"><label class="form-label">Judul Utama Hero</label><input class="form-input" id="hero-edit-title" type="text"></div>
         <div class="form-group"><label class="form-label">Sub-judul Hero</label><input class="form-input" id="hero-edit-subtitle" type="text"></div>
         <div class="form-group"><label class="form-label">Badge Text</label><input class="form-input" id="hero-edit-badge" type="text"></div>
+        <div class="form-group">
+          <label class="form-label">Gambar Latar Belakang (Hero Background)</label>
+          <div style="display:flex;align-items:center;gap:var(--space-4);margin-bottom:var(--space-3);">
+            <div id="hero-bg-preview" style="width:120px;height:67px;border-radius:var(--radius-md);overflow:hidden;background:var(--color-bg-primary);display:flex;align-items:center;justify-content:center;flex-shrink:0;border:2px solid var(--color-border);">
+              <span style="font-size:1.5rem;">🖼️</span>
+            </div>
+            <div style="flex:1;">
+              <label class="btn btn--outline btn--sm" style="cursor:pointer;display:inline-flex;">
+                📷 Ganti Background
+                <input type="file" accept="image/*" onchange="handleHeroBg(event)" style="display:none;">
+              </label>
+              <p style="font-size:var(--text-xs);color:var(--color-text-muted);margin-top:var(--space-2);">Format: JPG, PNG. Disarankan ukuran 1920x1080px.</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 

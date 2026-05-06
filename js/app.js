@@ -123,12 +123,21 @@ function renderDynamicContent() {
 }
 
 function renderHero(data) {
+  const heroData = data.hero || {};
   const el = document.getElementById('hero-title');
   const sub = document.getElementById('hero-subtitle');
   const badge = document.getElementById('hero-badge');
-  if (el && data.hero) el.innerHTML = data.hero.title.replace('PLS', '<span>PLS</span>');
-  if (sub && data.hero) sub.textContent = data.hero.subtitle;
-  if (badge && data.hero) badge.textContent = data.hero.badge;
+  
+  if (el && heroData.title) el.innerHTML = heroData.title.replace('PLS', '<span>PLS</span>');
+  if (sub && heroData.subtitle) sub.textContent = heroData.subtitle;
+  if (badge && heroData.badge) badge.textContent = heroData.badge;
+  
+  if (heroData.backgroundImage) {
+    const heroSection = document.getElementById('home');
+    if (heroSection) {
+      heroSection.style.backgroundImage = `linear-gradient(rgba(10, 36, 99, 0.7), rgba(10, 36, 99, 0.8)), url(${heroData.backgroundImage})`;
+    }
+  }
 }
 
 function renderKataPengantar(data) {
