@@ -173,35 +173,41 @@
 
   <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-auth-compat.js"></script>
   <script src="js/data.js"></script>
   <script src="js/storage.js"></script>
   <script>
-    // Redirect if already logged in
-    if (sessionStorage.getItem('ekatalog_admin_logged_in') === 'true') {
-      window.location.href = 'dashboard.html';
-    }
-
     function handleLogin(e) {
       e.preventDefault();
-      const user = document.getElementById('username').value.trim();
+      const email = document.getElementById('username').value.trim();
       const pass = document.getElementById('password').value;
-      const settings = Storage.get('settings');
-      const validUser = settings.adminUser || 'admin';
-      const validPass = settings.adminPassword || 'admin123';
+      const err = document.getElementById('login-error');
+      const btn = e.target.querySelector('button');
 
-      if (user === validUser && pass === validPass) {
-        sessionStorage.setItem('ekatalog_admin_logged_in', 'true');
-        Storage.addLog('Admin login berhasil');
-        window.location.href = 'dashboard.html';
-      } else {
-        const err = document.getElementById('login-error');
-        err.style.display = 'block';
-        err.style.animation = 'fadeIn 0.3s ease';
-        document.getElementById('password').value = '';
-        document.getElementById('password').focus();
-      }
+      btn.disabled = true;
+      btn.textContent = 'Mengecek...';
+      err.style.display = 'none';
+
+      firebase.auth().signInWithEmailAndPassword(email, pass)
+        .then(() => {
+          window.location.href = 'dashboard.html';
+        })
+        .catch((error) => {
+          console.error(error);
+          btn.disabled = false;
+          btn.textContent = 'Masuk';
+          err.textContent = 'Email atau password salah.';
+          err.style.display = 'block';
+          document.getElementById('password').value = '';
+          document.getElementById('password').focus();
+        });
       return false;
     }
+
+    // Auth listener to redirect if already logged in
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) window.location.href = 'dashboard.html';
+    });
   </script>
 </body>
 </html>

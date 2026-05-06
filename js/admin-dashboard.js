@@ -3,9 +3,11 @@
 // ============================================
 
 // Auth check
-if (sessionStorage.getItem('ekatalog_admin_logged_in') !== 'true') {
-  window.location.href = 'admin.html';
-}
+firebase.auth().onAuthStateChanged((user) => {
+  if (!user) {
+    window.location.href = 'admin.html';
+  }
+});
 
 let currentSector = 0;
 let editingJobIdx = -1;
@@ -109,9 +111,10 @@ function closeSlideOver() {
 
 // === LOGOUT ===
 function logout() {
-  sessionStorage.removeItem('ekatalog_admin_logged_in');
-  Storage.addLog('Admin logout');
-  window.location.href = 'admin.html';
+  if (!confirm('Yakin ingin keluar?')) return;
+  firebase.auth().signOut().then(() => {
+    window.location.href = 'admin.html';
+  });
 }
 
 // === DASHBOARD ===

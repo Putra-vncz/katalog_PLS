@@ -205,8 +205,6 @@ const DEFAULT_DATA = {
   },
 
   settings: {
-    adminUser: 'admin',
-    adminPassword: 'admin123',
     maintenanceMode: false,
     lastUpdated: new Date().toISOString(),
   },
